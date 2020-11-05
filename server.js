@@ -60,6 +60,17 @@ http
       res.status(400).json({ error: message });
     };
 
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    if (req.method === "OPTIONS") {
+      res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "X-PINGOTHER, Content-Type"
+      );
+      res.status(200).end();
+      return;
+    }
+
     if (req.method !== "POST") {
       res.error({ error: "HTTP method is not POST" });
       return;
