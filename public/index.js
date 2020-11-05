@@ -2,6 +2,8 @@ const form = document.querySelector("form");
 const output = document.querySelector("p#output");
 const input = document.querySelector("textarea#code");
 
+const API_ENDPOINT = "http://elisp-docstring.xuchunyang.me:3000/";
+
 form.onsubmit = async (e) => {
   e.preventDefault();
   const code = input.value.trim();
@@ -9,7 +11,7 @@ form.onsubmit = async (e) => {
     output.textContent = "You have not entered any code";
     return;
   }
-  const url = "http://127.0.0.1:3000/";
+  const url = API_ENDPOINT;
   const response = await fetch(url, {
     method: "POST",
     headers: {
