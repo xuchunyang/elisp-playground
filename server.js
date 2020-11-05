@@ -2,10 +2,12 @@ const http = require("http");
 const { execFile } = require("child_process");
 
 const EMACS_BINARY = "/usr/local/bin/emacs";
-const CODE = `(message "The time is %s" (current-time-stringx))`;
+const CODE = `(message "The time is %s" (current-time-string))`;
 
 const evalEmacsLispCode = async (code) => {
-  const args = ["-Q", "--batch", "--eval", code];
+  const prefix = "\n#+RESULTS:\n";
+  const wrapper = `(message "${prefix}%S" ${code})`;
+  const args = ["-Q", "--batch", "--eval", wrapper];
   const options = {
     timeout: 1000 * 10, // 10 seconds
     maxBuffer: 1024 * 100, // 100 KiB
@@ -16,7 +18,10 @@ const evalEmacsLispCode = async (code) => {
         reject(error);
         return;
       }
-      resole({ stdout, stderr });
+      const idx = stderr.lastIndexOf(prefix);
+      const value = stderr.slice(idx + prefix.length);
+      stderr = stderr.slice(0, idx);
+      resole({ stdout, stderr, value });
     });
   });
 };
