@@ -1,0 +1,20 @@
+{
+  "name": "elisp-playground",
+  "version": "1.0.0",
+  "description": "The Emacs Lisp Playground",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ls *.js | entr -r node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuchunyang/elisp-playground.git"
+  },
+  "author": "Xu Chunyang",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/xuchunyang/elisp-playground/issues"
+  },
+  "homepage": "https://github.com/xuchunyang/elisp-playground#readme"
+}
