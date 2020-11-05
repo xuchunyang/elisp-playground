@@ -2,18 +2,27 @@ const http = require("http");
 const { execFile } = require("child_process");
 
 const EMACS_BINARY = "/usr/local/bin/emacs";
-const CODE = `(message "The time is %s" (current-time-string))`;
 
 const evalEmacsLispCode = async (code) => {
   const prefix = "\n#+RESULTS:\n";
   const wrapper = `(message "${prefix}%S" ${code})`;
-  const args = ["-Q", "--batch", "--eval", wrapper];
+  const command = [
+    "unshare",
+    "--fork",
+    "--pid",
+    "--mount-proc",
+    EMACS_BINARY,
+    "-Q",
+    "--batch",
+    "--eval",
+    wrapper,
+  ];
   const options = {
     timeout: 1000 * 10, // 10 seconds
     maxBuffer: 1024 * 100, // 100 KiB
   };
   return new Promise((resole, reject) => {
-    execFile(EMACS_BINARY, args, options, (error, stdout, stderr) => {
+    execFile(command[0], command.slice(1), options, (error, stdout, stderr) => {
       if (error) {
         reject(error);
         return;
