@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ls *.js | entr -r node server.js"
+    "run-forever": "ls *.js | entr -r node server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
