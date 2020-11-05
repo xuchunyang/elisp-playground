@@ -72,7 +72,7 @@ http
     }
 
     if (req.method !== "POST") {
-      res.error({ error: "HTTP method is not POST" });
+      res.error("HTTP method is not POST");
       return;
     }
     const contentType = req.headers["content-type"];
