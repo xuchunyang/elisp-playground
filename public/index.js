@@ -2,7 +2,7 @@ const form = document.querySelector("form");
 const output = document.querySelector("p#output");
 const input = document.querySelector("textarea#code");
 
-const API_ENDPOINT = "http://elisp-docstring.xuchunyang.me:3000/";
+const API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
 
 form.onsubmit = async (e) => {
   e.preventDefault();
