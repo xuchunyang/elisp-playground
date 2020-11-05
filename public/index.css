@@ -1,0 +1,32 @@
+body {
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+}
+
+textarea {
+  width: 100%;
+  min-height: max-content;
+  height: 40vh;
+  resize: vertical;
+  font-family: monospace;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  padding: 1em;
+  margin: 1em 0;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0.5em 1em;
+}

@@ -1,5 +1,5 @@
 const form = document.querySelector("form");
-const output = document.querySelector("p#output");
+const output = document.querySelector("#output");
 const input = document.querySelector("textarea#code");
 
 const API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
@@ -8,7 +8,7 @@ form.onsubmit = async (e) => {
   e.preventDefault();
   const code = input.value.trim();
   if (code === "") {
-    output.textContent = "You have not entered any code";
+    output.innerHTML = `<p>You have not entered any code</p>`;
     return;
   }
   const url = API_ENDPOINT;
@@ -22,5 +22,5 @@ form.onsubmit = async (e) => {
   console.log(response);
   const json = await response.json();
   console.log(json);
-  output.textContent = JSON.stringify(json, null, 2);
+  output.innerHTML = `<pre>${JSON.stringify(json, null, 2)}</pre>`;
 };
