@@ -13,6 +13,7 @@ form.onsubmit = async (e) => {
     return;
   }
   const url = API_ENDPOINT;
+  output.innerHTML = "<p>Running your code...</p>";
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -23,6 +24,11 @@ form.onsubmit = async (e) => {
   console.log(response);
   const json = await response.json();
   console.log(json);
+  showResult(json);
+  saveState(code, JSON.stringify(json));
+};
+
+const showResult = (json) => {
   if ("error" in json) {
     output.textContent = json.error;
     return;
@@ -38,3 +44,22 @@ form.onsubmit = async (e) => {
 <pre>${json.stderr}</pre>
 `;
 };
+
+let saveState = () => {};
+let loadState = () => {};
+
+if ("localStorage" in window) {
+  saveState = (code, result) => {
+    localStorage.setItem("code", code);
+    localStorage.setItem("result", result);
+  };
+  loadState = () => {
+    const code = localStorage.getItem("code");
+    if (code) input.value = code;
+    const result = localStorage.getItem("result");
+    if (result) showResult(JSON.parse(result));
+  };
+  loadState();
+} else {
+  console.log("localStorage is not supported");
+}
