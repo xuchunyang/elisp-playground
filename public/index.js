@@ -14,18 +14,22 @@ form.onsubmit = async (e) => {
   }
   const url = API_ENDPOINT;
   output.innerHTML = "<p>Running your code...</p>";
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json; charset=UTF-8",
-    },
-    body: JSON.stringify({ code }),
-  });
-  console.log(response);
-  const json = await response.json();
-  console.log(json);
-  showResult(json);
-  saveState(code, JSON.stringify(json));
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ code }),
+    });
+    console.log(response);
+    const json = await response.json();
+    console.log(json);
+    showResult(json);
+    saveState(code, JSON.stringify(json));
+  } catch (err) {
+    output.innerHTML = `<p>ERROR: ${err.message}</p>`;
+  }
 };
 
 const showResult = (json) => {
