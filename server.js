@@ -36,6 +36,7 @@ const evalEmacsLispCode = async (code) => {
   });
 };
 
+// XXX Test
 evalEmacsLispCode("(+ 1 2)")
   .then((x) => console.log(x))
   .catch((e) => {

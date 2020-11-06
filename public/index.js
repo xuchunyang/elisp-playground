@@ -24,7 +24,7 @@ form.onsubmit = async (e) => {
   const json = await response.json();
   console.log(json);
   if ("error" in json) {
-    output.innerHTML = `<pre>${JSON.stringify(json, null, 2)}</pre>`;
+    output.textContent = json.error;
     return;
   }
   output.innerHTML = `
