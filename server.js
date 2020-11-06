@@ -1,22 +1,20 @@
+require("dotenv").config();
 const http = require("http");
 const { execFile } = require("child_process");
+
+const EMACS_BATCH_COMMAND = (
+  process.env.EMACS_BATCH_COMMAND ||
+  "unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001 emacs -Q --batch --eval"
+).split(" ");
 
 const evalEmacsLispCode = async (code) => {
   const prefix = "\n#+RESULTS:\n";
   const wrapper = `(message "${prefix}%S" ${code})`;
-  // HOME=/home/elisp-playground unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001 emacs -Q --batch --eval '(print emacs-version)'
-  const command = [
-    ..."unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001".split(" "),
-    ..."emacs -Q --batch --eval".split(" "),
-    wrapper,
-  ];
-  const env = Object.assign({}, process.env);
-  env.HOME = "/home/elisp-playground";
+  const command = EMACS_BATCH_COMMAND.concat(wrapper);
   const options = {
     timeout: 1000 * 10, // 10 seconds
     maxBuffer: 1024 * 100, // 100 KiB
-    env,
-    cwd: env.HOME,
+    cwd: "/tmp",
   };
   return new Promise((resolve, reject) => {
     execFile(command[0], command.slice(1), options, (error, stdout, stderr) => {

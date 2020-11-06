@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/xuchunyang/elisp-playground/issues"
   },
-  "homepage": "https://github.com/xuchunyang/elisp-playground#readme"
+  "homepage": "https://github.com/xuchunyang/elisp-playground#readme",
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
