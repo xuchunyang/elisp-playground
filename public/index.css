@@ -1,3 +1,7 @@
+:root {
+  --monospace-font: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+}
+
 body {
   line-height: 1.5;
 }
@@ -19,7 +23,7 @@ textarea {
   min-height: max-content;
   height: 40vh;
   resize: vertical;
-  font-family: monospace;
+  font-family: var(--monospace-font);
   font-size: 1.2rem;
   line-height: 1.5;
   padding: 1em;
@@ -29,4 +33,12 @@ textarea {
 
 button {
   padding: 0.5em 1em;
+}
+
+#output pre {
+  font-family: var(--monospace-font);
+  background-color: #f9fafa;
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 3px #eee;
+  padding: 1em;
 }
