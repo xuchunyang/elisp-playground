@@ -21,3 +21,7 @@ $ curl --data-raw '{"code": "(+ 1 2)"}' -H 'Content-Type: application/json' loca
   "stderr": ""
 }
 #+END_EXAMPLE
+
+** Other online Emacs Lisp code runner
+- [[https://repl.it/][Repl.it]] (interactive mode)
+- [[https://tio.run/][Try It Online]] (batch mode, just like mine)
