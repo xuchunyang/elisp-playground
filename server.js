@@ -1,19 +1,25 @@
 const http = require("http");
 const { execFile } = require("child_process");
 
-const EMACS_BINARY = "/usr/local/bin/emacs";
-const CODE = `(message "The time is %s" (current-time-string))`;
-
 const evalEmacsLispCode = async (code) => {
   const prefix = "\n#+RESULTS:\n";
   const wrapper = `(message "${prefix}%S" ${code})`;
-  const args = ["-Q", "--batch", "--eval", wrapper];
+  // HOME=/home/elisp-playground unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001 emacs -Q --batch --eval '(print emacs-version)'
+  const command = [
+    ..."unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001".split(" "),
+    ..."emacs -Q --batch --eval".split(" "),
+    wrapper,
+  ];
+  const env = Object.assign({}, process.env);
+  env.HOME = "/home/elisp-playground";
   const options = {
     timeout: 1000 * 10, // 10 seconds
     maxBuffer: 1024 * 100, // 100 KiB
+    env,
+    cwd: env.HOME,
   };
-  return new Promise((resole, reject) => {
-    execFile(EMACS_BINARY, args, options, (error, stdout, stderr) => {
+  return new Promise((resolve, reject) => {
+    execFile(command[0], command.slice(1), options, (error, stdout, stderr) => {
       if (error) {
         reject(error);
         return;
@@ -25,10 +31,18 @@ const evalEmacsLispCode = async (code) => {
         stderr.length - 1
       );
       stderr = stderr.slice(0, idx);
-      resole({ stdout, stderr, value });
+      resolve({ stdout, stderr, value });
     });
   });
 };
+
+evalEmacsLispCode("(+ 1 2)")
+  .then((x) => console.log(x))
+  .catch((e) => {
+    console.log(`===\n${e.message}\n===`);
+    // console.log();
+    // console.error(e);
+  });
 
 const getReqBody = (req) => {
   return new Promise((resolve, reject) => {
@@ -106,6 +120,7 @@ http
       return;
     }
 
+    console.log(code);
     try {
       const result = await evalEmacsLispCode(code);
       res.status(200).json(result);
@@ -113,10 +128,10 @@ http
       // console.error("ERROR\n", err);
       const myError = {};
       Object.assign(myError, err);
-      myError.error_message = err.message;
+      myError.error = err.message;
       res.status(400).json(myError);
     }
   })
   .listen(3000, () => {
-    console.log("Listening at http://127.0.0.1:3000/");
+    console.log("Listening at http://0.0.0.0:3000/");
   });

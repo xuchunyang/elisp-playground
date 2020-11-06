@@ -3,6 +3,7 @@ const output = document.querySelector("#output");
 const input = document.querySelector("textarea#code");
 
 const API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
+// const API_ENDPOINT = "http://pc.lan:3000/";
 
 form.onsubmit = async (e) => {
   e.preventDefault();
