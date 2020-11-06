@@ -34,9 +34,8 @@ form.onsubmit = async (e) => {
 };
 
 const showResult = (json) => {
-  console.log("Code run time", json.cost);
   if ("error" in json) {
-    output.textContent = json.error;
+    output.innerHTML = `<p>${json.error}</p>`;
     return;
   }
   // All elisp expression have value
@@ -47,6 +46,7 @@ const showResult = (json) => {
   if (json.stderr !== "") {
     output.innerHTML += `<p>Stderr:</p> <pre>${json.stderr}</pre>`;
   }
+  output.innerHTML += `<p>Code run time: ${json.cost}</p`;
 };
 
 let saveState = () => {};
