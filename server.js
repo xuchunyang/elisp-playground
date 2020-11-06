@@ -10,7 +10,7 @@ const EMACS_BATCH_COMMAND = (
 const evalEmacsLispCode = async (code) => {
   const start_time = new Date();
   const prefix = "\n#+RESULTS:\n";
-  const wrapper = `(message "${prefix}%S" ${code})`;
+  const wrapper = `(message "${prefix}%S" (progn ${code}))`;
   const command = EMACS_BATCH_COMMAND.concat(wrapper);
   const options = {
     timeout: 1000 * 10, // 10 seconds
