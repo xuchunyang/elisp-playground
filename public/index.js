@@ -34,6 +34,7 @@ form.onsubmit = async (e) => {
 };
 
 const showResult = (json) => {
+  console.log("Code run time", json.cost);
   if ("error" in json) {
     output.textContent = json.error;
     return;

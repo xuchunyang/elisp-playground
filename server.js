@@ -8,6 +8,7 @@ const EMACS_BATCH_COMMAND = (
 ).split(" ");
 
 const evalEmacsLispCode = async (code) => {
+  const start_time = new Date();
   const prefix = "\n#+RESULTS:\n";
   const wrapper = `(message "${prefix}%S" ${code})`;
   const command = EMACS_BATCH_COMMAND.concat(wrapper);
@@ -18,7 +19,10 @@ const evalEmacsLispCode = async (code) => {
   };
   return new Promise((resolve, reject) => {
     execFile(command[0], command.slice(1), options, (error, stdout, stderr) => {
+      const cost_seconds = (new Date() - start_time) / 1000;
+      const cost = `${cost_seconds} seconds`;
       if (error) {
+        error.cost = cost;
         reject(error);
         return;
       }
@@ -29,7 +33,7 @@ const evalEmacsLispCode = async (code) => {
         stderr.length - 1
       );
       stderr = stderr.slice(0, idx);
-      resolve({ stdout, stderr, value });
+      resolve({ cost, value, stdout, stderr });
     });
   });
 };
