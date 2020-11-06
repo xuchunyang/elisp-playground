@@ -1,3 +1,23 @@
 * The Emacs Lisp Playground
 
 http://elisp-playground.vercel.app/
+
+** Run the api server locally
+
+Start the server
+
+#+BEGIN_SRC shell
+$ EMACS_BATCH_COMMAND="/usr/local/bin/emacs -Q --batch --eval" node server.js
+#+END_SRC
+
+Run some code
+
+#+BEGIN_EXAMPLE
+$ curl --data-raw '{"code": "(+ 1 2)"}' -H 'Content-Type: application/json' localhost:3000
+{
+  "cost": "0.148 seconds",
+  "value": "3",
+  "stdout": "",
+  "stderr": ""
+}
+#+END_EXAMPLE
