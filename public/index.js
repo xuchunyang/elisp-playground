@@ -2,8 +2,9 @@ const form = document.querySelector("form");
 const output = document.querySelector("#output");
 const input = document.querySelector("textarea#code");
 
-const API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
-// const API_ENDPOINT = "http://pc.lan:3000/";
+// FIXME use localhost for local dev, use another for production, template?
+let API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
+// let API_ENDPOINT = "http://localhost:3000/";
 
 form.onsubmit = async (e) => {
   e.preventDefault();
