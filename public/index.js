@@ -33,16 +33,14 @@ const showResult = (json) => {
     output.textContent = json.error;
     return;
   }
-  output.innerHTML = `
-<p>Value:</p>
-<pre>${json.value}</pre>
-
-<p>Stdout:</p>
-<pre>${json.stdout}</pre>
-
-<p>Stderr:</p>
-<pre>${json.stderr}</pre>
-`;
+  // All elisp expression have value
+  output.innerHTML = `<p>Value:</p> <pre>${json.value}</pre>`;
+  if (json.stdout !== "") {
+    output.innerHTML += `<p>Stdout:</p> <pre>${json.stdout}</pre>`;
+  }
+  if (json.stderr !== "") {
+    output.innerHTML += `<p>Stderr:</p> <pre>${json.stderr}</pre>`;
+  }
 };
 
 let saveState = () => {};
