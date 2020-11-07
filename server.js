@@ -2,9 +2,14 @@ require("dotenv").config();
 const http = require("http");
 const { execFile } = require("child_process");
 
+// From fast to slow
+//
+// emacs -Q --batch --eval '(pp emacs-version)'
+// unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001 emacs -Q --batch --eval '(pp emacs-version)'
+// podman run --rm --pids-limit 2 --cpus=".5" -m 100m --read-only --network none silex/emacs emacs -Q --batch --eval '(pp emacs-version)'
 const EMACS_BATCH_COMMAND = (
   process.env.EMACS_BATCH_COMMAND ||
-  "unshare --fork --pid --mount-proc -w /tmp -S 1001 -G 1001 emacs -Q --batch --eval"
+  "podman run --rm --read-only --network none silex/emacs emacs -Q --batch --eval"
 ).split(" ");
 
 const evalEmacsLispCode = async (code) => {
