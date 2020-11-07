@@ -26,6 +26,7 @@ form.onsubmit = async (e) => {
     console.log(response);
     const json = await response.json();
     console.log(json);
+    history.pushState(json, "Emacs Lisp Playground", `?code=${encodeURIComponent(code)}`);
     showResult(json);
     saveState(code, JSON.stringify(json));
   } catch (err) {
