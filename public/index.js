@@ -52,7 +52,14 @@ const showResult = (json) => {
 let saveState = () => {};
 let loadState = () => {};
 
-if ("localStorage" in window) {
+if (window.location.search) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
+  input.value = code;
+  // not work
+  // form.submit();
+  form.querySelector("button").click();
+} else if ("localStorage" in window) {
   saveState = (code, result) => {
     localStorage.setItem("code", code);
     localStorage.setItem("result", result);
