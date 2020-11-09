@@ -1,4 +1,5 @@
 require("dotenv").config();
+const debug = require("debug")("elisp");
 const { execFile } = require("child_process");
 const express = require("express");
 
@@ -20,7 +21,9 @@ app.post("/", async (req, res) => {
   }
 
   try {
+    debug("Input: %o", { code, version });
     const result = await evalEmacsLispCode(code, version);
+    debug("Result: %o", result);
     res.json(result);
   } catch (err) {
     // console.error("ERROR\n", err);
