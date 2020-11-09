@@ -32,6 +32,9 @@ app.post("/", async (req, res) => {
       .json({ error: `Invalid version, supports ${VERSIONS.join(", ")}` });
     return;
   }
+  if (!version) {
+    version = versions[0];
+  }
 
   try {
     debug("Input: %o", { code, version });
@@ -54,7 +57,7 @@ app.post("/", async (req, res) => {
 // podman run --rm --pids-limit 2 --cpus=".5" -m 100m --read-only --network none silex/emacs emacs -Q --batch --eval '(pp emacs-version)'
 const EMACS_BATCH_COMMAND = process.env.EMACS_BATCH_COMMAND;
 
-const VERSIONS = ["24.5", "25.3", "26.3", "27.1"];
+const VERSIONS = ["27.1", "26.3", "25.3", "24.5"];
 const check_emacs_batch_command = (emacsVersion) => {
   if (EMACS_BATCH_COMMAND) return true;
   return versions.includes(emacsVersion);
