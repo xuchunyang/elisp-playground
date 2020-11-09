@@ -2,11 +2,21 @@ require("dotenv").config();
 const debug = require("debug")("elisp");
 const { execFile } = require("child_process");
 const express = require("express");
+const fs = require("fs");
+const morgan = require("morgan");
+
+const host = process.env.HOST || "localhost";
+const port = process.env.PORT || 3000;
+const logfile = process.env.LOGFILE || "/tmp/elisp-playground.log";
 
 const app = express();
 
-app.use(express.json());
+var accessLogStream = fs.createWriteStream(logfile, {
+  flags: "a",
+});
+app.use(morgan("combined", { stream: accessLogStream }));
 
+app.use(express.json());
 app.post("/", async (req, res) => {
   const { version, code } = req.body;
   if (!code) {
@@ -93,8 +103,6 @@ evalEmacsLispCode("(+ 1 2)")
     // console.error(e);
   });
 
-const host = process.env.HOST || "localhost";
-const port = process.env.PORT || 3000;
 app.listen(port, host, () => {
   console.log(`Listening at http://${host}:${port}`);
 });
