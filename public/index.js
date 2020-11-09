@@ -61,8 +61,10 @@ let loadState = () => {};
 
 if (window.location.search) {
   const urlParams = new URLSearchParams(window.location.search);
+  const version = urlParams.get("version");
+  if (version) versionSelect.value = version;
   const code = urlParams.get("code");
-  codeInput.value = code;
+  if (code) codeInput.value = code;
   // not work
   // form.submit();
   form.querySelector("button").click();
@@ -74,7 +76,7 @@ if (window.location.search) {
   };
   loadState = () => {
     const version = localStorage.getItem("version");
-    if (version) versionInput.value = version;
+    if (version) versionSelect.value = version;
     const code = localStorage.getItem("code");
     if (code) codeInput.value = code;
     const result = localStorage.getItem("result");
