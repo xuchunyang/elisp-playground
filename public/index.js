@@ -58,17 +58,7 @@ const showResult = (json) => {
 
 let saveState = () => {};
 let loadState = () => {};
-
-if (window.location.search) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const version = urlParams.get("version");
-  if (version) versionSelect.value = version;
-  const code = urlParams.get("code");
-  if (code) codeInput.value = code;
-  // not work
-  // form.submit();
-  form.querySelector("button").click();
-} else if ("localStorage" in window) {
+if ("localStorage" in window) {
   saveState = (version, code, result) => {
     localStorage.setItem("version", version);
     localStorage.setItem("code", code);
@@ -82,9 +72,21 @@ if (window.location.search) {
     const result = localStorage.getItem("result");
     if (result) showResult(JSON.parse(result));
   };
-  loadState();
 } else {
   console.log("localStorage is not supported");
+}
+
+if (window.location.search) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const version = urlParams.get("version");
+  if (version) versionSelect.value = version;
+  const code = urlParams.get("code");
+  if (code) codeInput.value = code;
+  // not work
+  // form.submit();
+  form.querySelector("button").click();
+} else {
+  loadState();
 }
 
 codeInput.addEventListener("keydown", function (e) {
