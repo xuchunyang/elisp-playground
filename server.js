@@ -33,7 +33,7 @@ app.post("/", async (req, res) => {
     return;
   }
   if (!version) {
-    version = versions[0];
+    version = VERSIONS[0];
   }
 
   try {
@@ -60,7 +60,7 @@ const EMACS_BATCH_COMMAND = process.env.EMACS_BATCH_COMMAND;
 const VERSIONS = ["27.1", "26.3", "25.3", "24.5"];
 const check_emacs_batch_command = (emacsVersion) => {
   if (EMACS_BATCH_COMMAND) return true;
-  return versions.includes(emacsVersion);
+  return VERSIONS.includes(emacsVersion);
 };
 const build_emacs_batch_command = (emacsVersion) => {
   const commandString = EMACS_BATCH_COMMAND
@@ -101,7 +101,7 @@ const evalEmacsLispCode = async (code, version) => {
 };
 
 // XXX Test
-evalEmacsLispCode("(+ 1 2)")
+evalEmacsLispCode("(+ 1 2)", "27.1")
   .then((x) => console.log(x))
   .catch((e) => {
     console.log(`===\n${e.message}\n===`);
