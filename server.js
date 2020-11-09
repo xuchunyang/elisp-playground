@@ -4,12 +4,15 @@ const { execFile } = require("child_process");
 const express = require("express");
 const fs = require("fs");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const host = process.env.HOST || "localhost";
 const port = process.env.PORT || 3000;
 const logfile = process.env.LOGFILE || "/tmp/elisp-playground.log";
 
 const app = express();
+
+app.use(cors());
 
 var accessLogStream = fs.createWriteStream(logfile, {
   flags: "a",
