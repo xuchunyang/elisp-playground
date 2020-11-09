@@ -17,7 +17,7 @@ app.use(cors());
 var accessLogStream = fs.createWriteStream(logfile, {
   flags: "a",
 });
-app.use(morgan("combined", { stream: accessLogStream }));
+// app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(express.json());
 app.post("/", async (req, res) => {
