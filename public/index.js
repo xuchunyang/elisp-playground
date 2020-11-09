@@ -1,6 +1,7 @@
 const form = document.querySelector("form");
 const output = document.querySelector("#output");
-const input = document.querySelector("textarea#code");
+const codeInput = document.querySelector("textarea#code");
+const versionSelect = document.querySelector("select#version");
 
 // FIXME use localhost for local dev, use another for production, template?
 let API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
@@ -8,7 +9,8 @@ let API_ENDPOINT = "https://elisp-playground.xuchunyang.me/";
 
 form.onsubmit = async (e) => {
   e.preventDefault();
-  const code = input.value.trim();
+  const version = versionSelect.value;
+  const code = codeInput.value.trim();
   if (code === "") {
     output.innerHTML = `<p>You have not entered any code</p>`;
     return;
@@ -21,7 +23,7 @@ form.onsubmit = async (e) => {
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
       },
-      body: JSON.stringify({ code }),
+      body: JSON.stringify({ version, code }),
     });
     console.log(response);
     const json = await response.json();
@@ -29,10 +31,10 @@ form.onsubmit = async (e) => {
     history.pushState(
       json,
       "Emacs Lisp Playground",
-      `?code=${encodeURIComponent(code)}`
+      `?version=${version}&code=${encodeURIComponent(code)}`
     );
     showResult(json);
-    saveState(code, JSON.stringify(json));
+    saveState(version, code, JSON.stringify(json));
   } catch (err) {
     output.innerHTML = `<p>ERROR: ${err.message}</p>`;
   }
@@ -60,18 +62,21 @@ let loadState = () => {};
 if (window.location.search) {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
-  input.value = code;
+  codeInput.value = code;
   // not work
   // form.submit();
   form.querySelector("button").click();
 } else if ("localStorage" in window) {
-  saveState = (code, result) => {
+  saveState = (version, code, result) => {
+    localStorage.setItem("version", version);
     localStorage.setItem("code", code);
     localStorage.setItem("result", result);
   };
   loadState = () => {
+    const version = localStorage.getItem("version");
+    if (version) versionInput.value = version;
     const code = localStorage.getItem("code");
-    if (code) input.value = code;
+    if (code) codeInput.value = code;
     const result = localStorage.getItem("result");
     if (result) showResult(JSON.parse(result));
   };
@@ -80,7 +85,7 @@ if (window.location.search) {
   console.log("localStorage is not supported");
 }
 
-input.addEventListener("keydown", function (e) {
+codeInput.addEventListener("keydown", function (e) {
   if (e.keyCode == 13 && e.metaKey) {
     this.form.submit();
   }
