@@ -20,5 +20,8 @@
   "homepage": "https://github.com/xuchunyang/elisp-playground#readme",
   "devDependencies": {
     "dotenv": "^8.2.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
